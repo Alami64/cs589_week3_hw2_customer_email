@@ -1,11 +1,14 @@
 {
-  "name": "openai-quickstart-node",
+  "name": "openai-qa",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "crawl": "python3 webcrawler.py",
+    "install":"pip install -r requirements.txt",
+    "generateEmbed":"python3.py embeddings.py"
   },
   "dependencies": {
     "next": "^13.1.1",

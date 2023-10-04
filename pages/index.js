@@ -3,18 +3,20 @@ import { useState } from "react";
 import styles from "./index.module.css";
 
 export default function Home() {
-  const [animalInput, setAnimalInput] = useState("");
+  const [question, setQuestion] = useState("");
   const [result, setResult] = useState();
+  const [loading, setLoading] = useState(false);
 
   async function onSubmit(event) {
     event.preventDefault();
+    setLoading(true); // Start loading
     try {
-      const response = await fetch("/api/generate", {
+      const response = await fetch("/api/generateAnswer", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ animal: animalInput }),
+        body: JSON.stringify({ question: question }),
       });
 
       const data = await response.json();
@@ -22,35 +24,36 @@ export default function Home() {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      setResult(data.result);
-      setAnimalInput("");
+      setResult(data.answer);
+      setQuestion("");
     } catch(error) {
-      // Consider implementing your own error handling logic here
       console.error(error);
       alert(error.message);
     }
+    setLoading(false); // End loading
   }
 
   return (
     <div>
       <Head>
-        <title>OpenAI Quickstart</title>
-        <link rel="icon" href="/dog.png" />
+        <title>Website Q&A</title>
+        <link rel="icon" href="/qanda.png" />
       </Head>
 
       <main className={styles.main}>
-        <img src="/dog.png" className={styles.icon} />
-        <h3>Name my pet</h3>
+        <img src="/qanda.png" className={styles.icon} />
+        <h3>OpenAI Q&A Bot</h3>
         <form onSubmit={onSubmit}>
           <input
             type="text"
-            name="animal"
-            placeholder="Enter an animal"
-            value={animalInput}
-            onChange={(e) => setAnimalInput(e.target.value)}
+            name="question"
+            placeholder="Enter a question"
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
           />
-          <input type="submit" value="Generate names" />
+          <input type="submit" value="Generate Answer" />
         </form>
+        {loading && <div className={styles.spinner}></div>}
         <div className={styles.result}>{result}</div>
       </main>
     </div>
