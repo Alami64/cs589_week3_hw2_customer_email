@@ -1,4 +1,5 @@
-# OpenAI API Interaction and Web Crawler
+# OpenAI API Email Generator
+
 
 This project comprises two main functionalities: interaction with the OpenAI API using embeddings and a web crawler specifically designed for the `openai.com` domain.
 
